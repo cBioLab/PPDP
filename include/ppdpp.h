@@ -19,11 +19,12 @@ namespace PPDPP{
 
 	int edit_check(std::string &s,std::string &c);
 
-	int makePairVec(int turn,int threshold,std::vector<std::pair<int,int>> &cells); //総和と閾値を入力し、位置ペアのベクトルを返す.lindexのペアの番号を返す.
+	//総和と閾値を入力し、位置ペアのベクトルを返す.lindexのペアの番号を返す.
+	int makePairVec(int turn,int threshold,std::vector<std::pair<int,int>> &cells);
 
 	class Server{
 		Elgamal::PublicKey pub;
-		Elgamal::CipherText *queryarray; //入出力ベクトルのメモリ確保に関しては要検証
+		Elgamal::CipherText *queryarray;
 		Elgamal::CipherText *resultarray;
 		CipherTextVec l_queryvec;
 		std::string sequence;
@@ -38,12 +39,19 @@ namespace PPDPP{
 		int len_server;
 		int epsilon;
 		int lindex;
-		void setParam(std::string& cparam); //文字列長,閾値セット
-		void makeParam(std::string& sparam); //相手側,文字列長セット,乱数メモリ確保と初期化,配列メモリ確保
+		//文字列長,閾値セット
+		void setParam(std::string& cparam);
+		void setLindex(int l,std::vector<std::pair<int,int>> &cells);
+		//相手側,文字列長セット,乱数メモリ確保と初期化,配列メモリ確保
+		void makeParam(std::string& sparam);
 		void readPubkey(std::string& pubfile);
-		void loopmain(int turn,std::string& queryfile,std::string& resultfile); //map生成→paraDP→(addAnsV). M+N-1回呼び出し
-		void parallelDP(std::string& queryfile,std::string& resultfile,); //入力ファイルと通信回数を受け取り,出力ファイル生成.必要な位置をマップで確保.lindexのセットも.
-		void calcInnerProduct(Elgamal::CipherText *query,Elgamal::CipherText *ret,int turn_c,int turn_s); //parallelDPから呼び出される.セルの位置と入力ベクトルを渡され出力ベクトルを返す.
+
+		//map生成→paraDP→(addAnsV). M+N-1回呼び出し
+
+		//入力ファイルと通信回数を受け取り,出力ファイル生成.必要な位置をマップで確保.lindexのセットも.
+		void parallelDP(std::string& queryfile,std::string& resultfile);
+		//parallelDPから呼び出される.セルの位置と入力ベクトルを渡され出力ベクトルを返す.
+		void calcInnerProduct(Elgamal::CipherText *query,Elgamal::CipherText *ret,int turn_c,int turn_s);
 		void addAnsVec(std::string& lqueryfile); //セルの位置はlindexで知らせる.
 		void makeEditDFile(std::string& ans); //返答用ベクトルの要素を足しこんでファイルに書き込み.
 		Server(std::string &str){
@@ -72,14 +80,22 @@ namespace PPDPP{
 		int epsilon;
 		int lindex;
 		void setKeys(std::string& prvFile, std::string& pubFile);
-		void setParam(std::string& sparam); //文字列長セット,閾値セット
-		void makeParam(std::string& cparam); //相手側文字列セット,x,yメモリ確保と初期化,配列メモリ確保
-		void loopmain(int turn,std::string& query,std::string& result); //map生成→makeQS→decRS→(makeLQ)
-		void makeQuerySet(std::string& query,std::vector<pair<int,int> &cells>); //必要なセルの位置をマップで確保.
-		void makeQuery(int turn_c,int turn_s,Elgamal::CipherText *queryvec); //makeQuerySetから呼び出される.格納先のベクトルのメモリ確保は要検証
+		//文字列長セット,閾値セット
+		void setParam(std::string& sparam);
+		void setLindex(int l,std::vector<std::pair<int,int>> &cells);
+		//相手側文字列セット,x,yメモリ確保と初期化,配列メモリ確保
+		void makeParam(std::string& cparam);
+
+		//map生成→makeQS→decRS→(makeLQ)
+
+		//必要なセルの位置をマップで確保.
+		void makeQuerySet(std::string& query,std::vector<pair<int,int> &cells>); 
+		//makeQuerySetから呼び出される.格納先のベクトルのメモリ確保は要検証
+		void makeQuery(int turn_c,int turn_s,Elgamal::CipherText *queryvec);
 		void makeLQuery(std::string& l_query);
 		void decResultSet(std::string& result,std::vector<pair<int,int> &cells>);
-		void decResult(Elgamal::CipherText *resultvec,int turn_c,int turn_s); //decResultSetからの呼び出し.位置を知らせてx,yを更新する 
+		//decResultSetからの呼び出し.位置を知らせてx,yを更新する
+		void decResult(Elgamal::CipherText *resultvec,int turn_c,int turn_s);
 		int decEditD(std::string& Ans);
 		Client(std::string &str){
 			sequence = str;
