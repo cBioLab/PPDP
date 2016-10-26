@@ -1,7 +1,7 @@
 #include "rot.h"
 
-//#define DEBUG
-//#define NRAND
+#define DEBUG
+#define NRAND
 
 extern cybozu::RandomGenerator rg;
 
@@ -20,7 +20,7 @@ namespace PPDPP{
 	int edit_check(std::string &s,std::string &c);
 
 	//総和と閾値を入力し、位置ペアのベクトルを返す.lindexのペアの番号を返す.
-	int makePairVec(int turn,int threshold,std::vector<std::pair<int,int>> &cells);
+	int makePairVec(int turn,int cl,int sl,int threshold,std::vector< std::pair<int,int> >& cells);
 
 	class Server{
 		Elgamal::PublicKey pub;
@@ -32,7 +32,7 @@ namespace PPDPP{
 		int *ran_y;
 		int ran_x_a;
 		int ran_y_a;
-		ChiperTextVec ansvec;
+		CipherTextVec ansvec;
 	public:
 		int core;
 		int len_client;
@@ -41,7 +41,7 @@ namespace PPDPP{
 		int lindex;
 		//文字列長,閾値セット
 		void setParam(std::string& cparam);
-		void setLindex(int l,std::vector<std::pair<int,int>> &cells);
+		void setLindex(int l,std::vector< std::pair<int,int> >& cells);
 		//相手側,文字列長セット,乱数メモリ確保と初期化,配列メモリ確保
 		void makeParam(std::string& sparam);
 		void readPubkey(std::string& pubfile);
@@ -49,7 +49,7 @@ namespace PPDPP{
 		//map生成→paraDP→(addAnsV). M+N-1回呼び出し
 
 		//入力ファイルと通信回数を受け取り,出力ファイル生成.必要な位置をマップで確保.lindexのセットも.
-		void parallelDP(std::string& queryfile,std::string& resultfile);
+		void parallelDP(std::string& queryfile,std::string& resultfile,std::vector< std::pair<int,int> >& cells);
 		//parallelDPから呼び出される.セルの位置と入力ベクトルを渡され出力ベクトルを返す.
 		void calcInnerProduct(Elgamal::CipherText *query,Elgamal::CipherText *ret,int turn_c,int turn_s);
 		void addAnsVec(std::string& lqueryfile); //セルの位置はlindexで知らせる.
@@ -60,9 +60,9 @@ namespace PPDPP{
 			std::cerr << "make server" << std::endl;
 			len_server = sequence.size();
 		}
-		#ifdef DEBUG
-			Elgamal::PrivateKey prv;
-		#endif
+#ifdef DEBUG
+		Elgamal::PrivateKey prv;
+#endif
 	};
 
 	class Client{
@@ -82,18 +82,18 @@ namespace PPDPP{
 		void setKeys(std::string& prvFile, std::string& pubFile);
 		//文字列長セット,閾値セット
 		void setParam(std::string& sparam);
-		void setLindex(int l,std::vector<std::pair<int,int>> &cells);
+		void setLindex(int l,std::vector< std::pair<int,int> >& cells);
 		//相手側文字列セット,x,yメモリ確保と初期化,配列メモリ確保
 		void makeParam(std::string& cparam);
 
 		//map生成→makeQS→decRS→(makeLQ)
 
 		//必要なセルの位置をマップで確保.
-		void makeQuerySet(std::string& query,std::vector<pair<int,int> &cells>); 
+		void makeQuerySet(std::string& query,std::vector< std::pair<int,int> >& cells); 
 		//makeQuerySetから呼び出される.格納先のベクトルのメモリ確保は要検証
 		void makeQuery(int turn_c,int turn_s,Elgamal::CipherText *queryvec);
 		void makeLQuery(std::string& l_query);
-		void decResultSet(std::string& result,std::vector<pair<int,int> &cells>);
+		void decResultSet(std::string& result,std::vector< std::pair<int,int> >& cells);
 		//decResultSetからの呼び出し.位置を知らせてx,yを更新する
 		void decResult(Elgamal::CipherText *resultvec,int turn_c,int turn_s);
 		int decEditD(std::string& Ans);

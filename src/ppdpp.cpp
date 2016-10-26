@@ -11,7 +11,7 @@ int PPDPP::dtoi(char c){
   }
 }
 
-int PPDPP::makePairVec(int turn,int cl,int sl,int threshold,std::vector<std::pair<int,int>> &cells){
+int PPDPP::makePairVec(int turn,int cl,int sl,int threshold,std::vector< std::pair<int,int> >& cells){
   cells.resize(0);
   int ret = -1;
   for(int i=0;i<=turn;i++){
@@ -25,26 +25,13 @@ int PPDPP::makePairVec(int turn,int cl,int sl,int threshold,std::vector<std::pai
     //lindexの条件必要
     if(j == sl-1 || j == turn + threshold) ret = cells.size()-1;
   }
+#ifdef DEBUG
+  if(ret != -1) std::cerr << "lindex : " <<  "(" << cells[ret].first << "," << cells[ret].second << ") " << std::endl;
+#endif
+
   return ret;
 }
 
-void PPDPP::Server::setParam(std::string& cparam){
-  std::ifstream ifs(cparam.c_str(), std::ios::binary);
-  ifs >> len_client;
-  ifs >> epsilon;
-  if(epsilon == 0) epsilon = max(sequence.size(),len_client);
-  if(epsilon < abs(sequence.size()-len_client)) std::cerr << "no answer s " << abs((int)(sequence.size()-len_client)) << std::endl;
-  ran_x = (int*)malloc(len_client*sizeof(int));
-  if(ran_x == NULL) std::cerr << "error ranx" << std::endl;
-  for(int i=0;i<len_client;i++) ran_x[i] = 0;
-  ran_y = (int*)malloc(len_server*sizeof(int));
-  if(ran_y == NULL) std::cerr << "error rany" << std::endl;
-  for(int i=0;i<len_server;i++) ran_y[i] = 0;
-  //ファイル入出力用配列の初期化
-  queryarray = (*Elgamal::CipherText)malloc(min3(epsilon,len_client,len_server)*7*sizeof(Elgamal::CipherText));
-  resultarray = (*Elgamal::CipherText)malloc(min3(epsilon,len_client,len_server)*6*sizeof(Elgamal::CipherText));
-  if(queryarray == NULL || resultarray == NULL) std::cerr << "error elgamalarray1" << std::endl;
-}
 
 void PPDPP::Server::setParam(std::string& cparam){
   std::ifstream ifs(cparam.c_str(), std::ios::binary);
@@ -52,20 +39,28 @@ void PPDPP::Server::setParam(std::string& cparam){
   ifs >> epsilon;
   if(epsilon == 0) epsilon = max(sequence.size(),len_client);
   if(epsilon < abs(sequence.size()-len_client)) std::cerr << "no answer s " << abs((int)(sequence.size()-len_client)) << std::endl;
-  ran_x = (int*)malloc(len_client*sizeof(int));
+  ran_x = (int*)malloc(len_server*len_client*sizeof(int));
   if(ran_x == NULL) std::cerr << "error ranx" << std::endl;
-  for(int i=0;i<len_client;i++) ran_x[i] = 0;
-  ran_y = (int*)malloc(len_server*sizeof(int));
+  ran_y = (int*)malloc(len_server*len_client*sizeof(int));
   if(ran_y == NULL) std::cerr << "error rany" << std::endl;
-  for(int i=0;i<len_server;i++) ran_y[i] = 0;
+  //ranx,ranyの初期化
+  for(int i=0;i<len_client;i++){
+    for(int j=0;j<len_server;j++){
+      ran_x[i*len_server+j] = ran_y[i*len_server+j] = 0;
+    }
+  }
   //ファイル入出力用配列の初期化
-  queryarray = (*Elgamal::CipherText)malloc(min3(epsilon,len_client,len_server)*7*sizeof(Elgamal::CipherText));
-  resultarray = (*Elgamal::CipherText)malloc(min3(epsilon,len_client,len_server)*6*sizeof(Elgamal::CipherText));
+  int mem = min3(epsilon,len_client,len_server);
+#ifdef DEBUG
+  std::cerr << "mem : " << mem << std::endl;
+#endif
+  queryarray = (Elgamal::CipherText*)malloc(mem*7*sizeof(Elgamal::CipherText));
+  resultarray = (Elgamal::CipherText*)malloc(mem*6*sizeof(Elgamal::CipherText));
   if(queryarray == NULL || resultarray == NULL) std::cerr << "error elgamalarray1" << std::endl;
 }
 
-void PPDPP::Server::setLindex(int l,std::vector<std::pair<int,int>> &cells){
-  lindex = cells[l].second();
+void PPDPP::Server::setLindex(int l,std::vector< std::pair<int,int> >& cells){
+  lindex = cells[l].second;
 }
 
 void PPDPP::Server::makeParam(std::string& sparam){
@@ -78,7 +73,7 @@ void PPDPP::Server::readPubkey(std::string& pubFile){
   std::cerr << "Server received pubKey" << std::endl;
 }
 
-void PPDPP::Server::parallelDP(std::string& queryfile,std::string& resultfile,std::vector<pair<int,int>> &cells){
+void PPDPP::Server::parallelDP(std::string& queryfile,std::string& resultfile,std::vector< std::pair<int,int> >& cells){
   std::ifstream ifs(queryfile.c_str(), std::ios::binary);
   std::ofstream ofs(resultfile.c_str(), std::ios::binary);
   int loopnum = cells.size();
@@ -86,7 +81,7 @@ void PPDPP::Server::parallelDP(std::string& queryfile,std::string& resultfile,st
     ifs >> queryarray[i];
   }
   for(int i=0;i<loopnum;i++){
-    calcInnerProduct(queryarray+(7*i),resultarray+(6*i),cells[i].first(),cells[i].second());
+    calcInnerProduct(queryarray+(7*i),resultarray+(6*i),cells[i].first,cells[i].second);
   }
   for(int i=0;i<loopnum*6;i++){
     ofs << resultarray[i] << "\n";
@@ -94,35 +89,36 @@ void PPDPP::Server::parallelDP(std::string& queryfile,std::string& resultfile,st
 }
 
 void PPDPP::Server::calcInnerProduct(Elgamal::CipherText *query,Elgamal::CipherText *ret,int turn_c,int turn_s){
-  CipherTextVec queryvec(7);
+  CipherTextVec queryvec;
+  queryvec.resize(7);
   for(int i=0;i<7;i++) queryvec[i] = query[i];
   CipherTextVec ctv;
   Elgamal::CipherText tmp;
-  resvec.resize(0);
   Zn rn;
   int rx = rand();
   int ry = rand();
+  int index = turn_c * len_server + turn_s;
 #ifdef NRAND
   rx = ry = 0;
 #endif
 #ifdef DEBUG
-  std::cerr << "ranx : " << ran_x[turn_c] << " rany : " << ran_y[turn_s] << std::endl;
+  std::cerr << "ranx : " << ran_x[index] << " rany : " << ran_y[index] << std::endl;
 #endif
   for(int i=0;i<6;i++){
     pub.enc(ret[i],0,rg);
     ctv = queryvec;
     for(int j=0;j<6;j++){
-      int index = ( ( (3-ran_y[turn_s]+(6*i+j))%3 + (9-3*ran_x[turn_c]+((6*i+j)/3)*3))%9 + (36-9*dtoi(sequence[turn_s])+((6*i+j)/9)*9) ) % 36;
+      int t_index = ( ( (3-ran_y[index]+(6*i+j))%3 + (9-3*ran_x[index]+((6*i+j)/3)*3))%9 + (36-9*dtoi(sequence[turn_s])+((6*i+j)/9)*9) ) % 36;
 #ifdef DEBUG
-      std::cerr << ((table[index]/3+rx)%3)*3 + (table[index] + ry)%3 << " ";
+      std::cerr << ((table[t_index]/3+rx)%3)*3 + (table[t_index] + ry)%3 << " ";
 #endif
-      ctv[j].mul(((table[index]/3+rx)%3)*3 + (table[index] + ry)%3);
+      ctv[j].mul(((table[t_index]/3+rx)%3)*3 + (table[t_index] + ry)%3);
     }
     for(int j=0;j<6;j++)  ret[i].add(ctv[j]);
 #ifdef DEBUG
     std::cerr << std::endl;
     bool b;
-    int iip = prv.dec(ip,&b);
+    int iip = prv.dec(ret[i],&b);
     if(b) std::cout << "ip" << i << " : "<< iip << std::endl; 
 #endif
     rn.setRand(rg);
@@ -131,7 +127,6 @@ void PPDPP::Server::calcInnerProduct(Elgamal::CipherText *query,Elgamal::CipherT
     tmp.add(queryvec[6]);
     tmp.mul(rn);
     ret[i].add(tmp);
-    resvec.push_back(ip);
 #ifdef DEBUG
     iip = prv.dec(ret[i],&b);
     if(b) std::cout << "ip_ans" << i << " : "<< iip << std::endl; 
@@ -141,8 +136,8 @@ void PPDPP::Server::calcInnerProduct(Elgamal::CipherText *query,Elgamal::CipherT
     ran_x_a = ran_x[turn_c];
     ran_y_a = ran_y[turn_s];
   }
-  ran_x[turn_c] = rx % 3;
-  ran_y[turn_s] = ry % 3;
+  if(turn_c != len_client-1) ran_x[(turn_c+1)*len_server+turn_s] = rx % 3;
+  if(turn_s != len_server-1) ran_y[turn_c*len_server+(turn_s+1)] = ry % 3;
 }
 
 void PPDPP::Server::addAnsVec(std::string& l_query){
@@ -206,17 +201,22 @@ void PPDPP::Client::setParam(std::string& sparam){
   if(epsilon == 0) epsilon = max(sequence.size(),len_server);
   if(epsilon < abs((int)(sequence.size()-len_server))) std::cerr << "no answer c " << std::endl;
   //x,yの初期化
-  x = (*int)malloc(len_client*sizeof(int));
-  y = (*int)malloc(len_server*sizeof(int));
+  x = (int*)malloc(len_server*len_client*sizeof(int));
+  y = (int*)malloc(len_server*len_client*sizeof(int));
   if(x == NULL || y == NULL) std::cerr << "error x,y" << std::endl;
+  for(int i=0;i<len_client;i++){
+    for(int j=0;j<len_server;j++){
+      x[i*len_server+j] = y[i*len_server+j] = 2;
+    }
+  }
   //入出力用配列の初期化
-  queryarray = (*Elgamal::CipherText)malloc(min3(epsilon,len_client,len_server)*7*sizeof(Elgamal::CipherText));
-  resultarray = (*Elgamal::CipherText)malloc(min3(epsilon,len_client,len_server)*6*sizeof(Elgamal::CipherText));
+  queryarray = (Elgamal::CipherText*)malloc(min3(epsilon,len_client,len_server)*7*sizeof(Elgamal::CipherText));
+  resultarray = (Elgamal::CipherText*)malloc(min3(epsilon,len_client,len_server)*6*sizeof(Elgamal::CipherText));
   if(queryarray == NULL || resultarray == NULL) std::cerr << "error array" << std::endl;
 }
 
-void PPDPP::Client::setLindex(int l,std::vector<std::pair<int,int>> &cells){
-  lindex = cells[l].first();
+void PPDPP::Client::setLindex(int l,std::vector< std::pair<int,int> > &cells){
+  lindex = cells[l].first;
 }
 
 void PPDPP::Client::makeParam(std::string& cparam){
@@ -225,11 +225,11 @@ void PPDPP::Client::makeParam(std::string& cparam){
   ofs << epsilon << "\n";
 }
 
-void PPDPP::Client::makeQuerySet(std::string& query,std::vector<pair<int,int>> &cells){
+void PPDPP::Client::makeQuerySet(std::string& query,std::vector< std::pair<int,int> >& cells){
   std::ofstream ofs(query.c_str(), std::ios::binary);
   int loopnum = cells.size();
   for(int i=0;i<loopnum;i++){
-    makeQuery(cells[i].first(),cells[i].second(),queryarray+(i*7));
+    makeQuery(cells[i].first,cells[i].second,queryarray+(i*7));
   }
   for(int i=0;i<loopnum*7;i++){
     ofs << queryarray[i] << "\n";
@@ -238,9 +238,10 @@ void PPDPP::Client::makeQuerySet(std::string& query,std::vector<pair<int,int>> &
 
 void PPDPP::Client::makeQuery(int turn_c,int turn_s,Elgamal::CipherText *queryvec){
   Elgamal::CipherText ct;
-  int t = 3*x[turn_c]+y[turn_s]+9*dtoi(sequence[turn]);
+  int index = turn_c * len_server + turn_s;
+  int t = 3*x[index]+y[index]+9*dtoi(sequence[turn_c]);
 #ifdef DEBUG
-  std::cout << x[turn] << " " << y[turn_s] << " "<< t <<std::endl; 
+  std::cout << x[index] << " " << y[index] << " "<< t <<std::endl; 
 #endif
   for(int i=0;i<6;i++){
     pub.enc(queryvec[i],(t%6)==i,rg);
@@ -263,20 +264,21 @@ void PPDPP::Client::makeLQuery(std::string& l_query){
   }
 }
 
-void PPDPP::Client::decResultSet(std::string& result,std::vector<pair<int,int>> &cells){
+void PPDPP::Client::decResultSet(std::string& result,std::vector< std::pair<int,int> >& cells){
   std::ifstream ifs(result.c_str(), std::ios::binary);
   int loopmain = cells.size();
   for(int i=0;i<6*loopmain;i++){
     ifs >> resultarray[i];
   }
   for(int i=0;i<loopmain;i++){
-    decResult(resultarray+(i*6),cells[i].first(),cells[i].second());
+    decResult(resultarray+(i*6),cells[i].first,cells[i].second);
   }
 }
 
 void PPDPP::Client::decResult(Elgamal::CipherText *resultvec,int turn_c,int turn_s){
   bool b;
-  int ret = prv.dec(resultvec[(3*x[turn_c]+y[turn_s]+9*dtoi(sequence[turn_c]))/6], &b);
+  int index = turn_c * len_server + turn_s;
+  int ret = prv.dec(resultvec[(3*x[index]+y[index]+9*dtoi(sequence[turn_c]))/6], &b);
 #ifdef DEBUG
   if(b) std::cerr << "ret : " << ret << std::endl;
   else std::cerr << "ret:error " << std::endl;
@@ -285,8 +287,8 @@ void PPDPP::Client::decResult(Elgamal::CipherText *resultvec,int turn_c,int turn
     lx = x[turn_c];
     ly = y[turn_s];
   }
-  x[turn_c] = ret / 3;
-  y[turn_s] = ret % 3;
+  if(turn_c != len_client-1) x[turn_c+1] = ret / 3;
+  if(turn_s != len_server-1) y[turn_s+1] = ret % 3;
 }
 
 int PPDPP::Client::decEditD(std::string& Ans){
