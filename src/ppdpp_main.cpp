@@ -16,8 +16,8 @@ int main(int argc,char* argv[]){
   std::string str1,str2;
 	
   if(argc == 1){
-    str1 = "TATATATA";
-    str2 = "ATGTATAT";
+    str1 = "TAT";
+    str2 = "TTT";
   }else{
     std::string stringfile = argv[1];
     std::ifstream readfile(stringfile.c_str(),std::ios::in);
@@ -53,16 +53,16 @@ int main(int argc,char* argv[]){
   
   client.setKeys(prvfile, pubfile);
   server.readPubkey(pubfile);
-
-#ifdef DEBUG
-  ROT::Load(server.prv, prvfile);
-  std::cerr << "Server received prvKey" << std::endl;
-  server.prv.setCache(0, 100); // set cache for prv
-#endif
   
   int sl = server.len_server;
   int cl = client.len_client;
   int epsilon = client.epsilon;
+
+#ifdef DEBUG
+  ROT::Load(server.prv, prvfile);
+  std::cerr << "Server received prvKey" << std::endl;
+  server.prv.setCache(0, max(max(sl,cl),37)); // set cache for prv
+#endif
 
   std::vector< std::pair<int,int> > cells;
     

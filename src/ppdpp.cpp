@@ -91,7 +91,21 @@ void PPDPP::Server::parallelDP(std::string& queryfile,std::string& resultfile,st
 void PPDPP::Server::calcInnerProduct(Elgamal::CipherText *query,Elgamal::CipherText *ret,int turn_c,int turn_s){
   CipherTextVec queryvec;
   queryvec.resize(7);
-  for(int i=0;i<7;i++) queryvec[i] = query[i];
+#ifdef DEBUG
+	bool b;
+	int iip;
+#endif
+  for(int i=0;i<7;i++){
+    queryvec[i] = query[i];
+#ifdef DEBUG
+    iip = prv.dec(queryvec[i],&b);
+    if(b) std::cerr << iip << " ";
+    else std::cerr << "error query";
+#endif
+  }
+#ifdef DEBUG
+  std::cerr << std::endl;
+#endif
   CipherTextVec ctv;
   Elgamal::CipherText tmp;
   Zn rn;
@@ -117,9 +131,9 @@ void PPDPP::Server::calcInnerProduct(Elgamal::CipherText *query,Elgamal::CipherT
     for(int j=0;j<6;j++)  ret[i].add(ctv[j]);
 #ifdef DEBUG
     std::cerr << std::endl;
-    bool b;
-    int iip = prv.dec(ret[i],&b);
-    if(b) std::cout << "ip" << i << " : "<< iip << std::endl; 
+    iip = prv.dec(ret[i],&b);
+    if(b) std::cerr << "ip" << i << " : "<< iip << std::endl;
+    else std::cerr << "error ret" << std::endl;
 #endif
     rn.setRand(rg);
     pub.enc(tmp,i,rg);
@@ -132,12 +146,12 @@ void PPDPP::Server::calcInnerProduct(Elgamal::CipherText *query,Elgamal::CipherT
     if(b) std::cout << "ip_ans" << i << " : "<< iip << std::endl; 
 #endif
   }
-  if(lindex = turn_s){
-    ran_x_a = ran_x[turn_c];
-    ran_y_a = ran_y[turn_s];
+  if(lindex == turn_s){
+    ran_x_a = ran_x[index];
+    ran_y_a = ran_y[index];
   }
-  if(turn_c != len_client-1) ran_x[(turn_c+1)*len_server+turn_s] = rx % 3;
-  if(turn_s != len_server-1) ran_y[turn_c*len_server+(turn_s+1)] = ry % 3;
+  if(turn_s != len_server-1) ran_x[turn_c*len_server+(turn_s+1)] = rx % 3;
+  if(turn_c != len_client-1) ran_y[(turn_c+1)*len_server+turn_s] = ry % 3;
 }
 
 void PPDPP::Server::addAnsVec(std::string& l_query){
@@ -160,7 +174,7 @@ void PPDPP::Server::makeEditDFile(std::string& ans){
   Elgamal::CipherText editD;
   pub.enc(editD,0,rg);
   for(int i=0;i<ansvec.size();i++){
-		#ifdef DEBUG
+#ifdef DEBUG
     bool b;
     std::cout << "ans" << i << " : "<< prv.dec(ansvec[i],&b) << std::endl; 
 #endif
@@ -233,7 +247,17 @@ void PPDPP::Client::makeQuerySet(std::string& query,std::vector< std::pair<int,i
   }
   for(int i=0;i<loopnum*7;i++){
     ofs << queryarray[i] << "\n";
+#ifdef DEBUG
+    bool b;
+    int iip;
+    iip = prv.dec(queryarray[i],&b);
+    if(b) std::cerr << iip << " ";
+    else std::cerr << "error query";
+#endif
   }
+#ifdef DEBUG
+  std::cerr << std::endl;
+#endif
 }
 
 void PPDPP::Client::makeQuery(int turn_c,int turn_s,Elgamal::CipherText *queryvec){
@@ -284,11 +308,11 @@ void PPDPP::Client::decResult(Elgamal::CipherText *resultvec,int turn_c,int turn
   else std::cerr << "ret:error " << std::endl;
 #endif
   if(lindex == turn_c){
-    lx = x[turn_c];
-    ly = y[turn_s];
+    lx = x[index];
+    ly = y[index];
   }
-  if(turn_c != len_client-1) x[turn_c+1] = ret / 3;
-  if(turn_s != len_server-1) y[turn_s+1] = ret % 3;
+  if(turn_s != len_server-1) x[turn_c*len_server+(turn_s+1)] = ret / 3;
+  if(turn_c != len_client-1) y[(turn_c+1)*len_server+turn_s] = ret % 3;
 }
 
 int PPDPP::Client::decEditD(std::string& Ans){

@@ -16,7 +16,7 @@ pbwt_sec:
 	make -C ../../PBWT-sec/src/
 
 clean:
-	rm -rf ../bin/ppdpp_main $(SDP_OBJS) ../bin/server $(SERVER_OBJS) ../bin/client  $(CLIENT_OBJS) *~
+	rm -rf ../bin/ppdpp_main $(PPDPP_OBJS) ../bin/server $(SERVER_OBJS) ../bin/client  $(CLIENT_OBJS) *~
 
 .SUFFIXES: .cpp
 
