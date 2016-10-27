@@ -25,7 +25,8 @@ int main(int argc,char* argv[]){
 	std::string stringfile;
 	int sendsize = 0;
 	int recvsize = 0;
-	int core,epsilon=-1;;
+	int core = 1;
+	int epsilon=0;
 
   ROT::SysInit();
   
@@ -55,8 +56,6 @@ int main(int argc,char* argv[]){
 			case 'f':
 				{ 
 					stringfile = optarg;
- 					std::ifstream readfile(stringfile.c_str(),std::ios::in);
-  				std::getline(readfile,str);
 					break;
 				}
 			case 'c':
@@ -77,6 +76,9 @@ int main(int argc,char* argv[]){
 				}
 		}
 	}
+
+	std::ifstream readfile(stringfile.c_str(),std::ios::in);
+  std::getline(readfile,str);
 
   PPDPP::Client client(str);	
   std::cerr << str << std::endl;

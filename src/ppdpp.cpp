@@ -80,6 +80,8 @@ void PPDPP::Server::parallelDP(std::string& queryfile,std::string& resultfile,st
   for(int i=0;i<7*loopnum;i++){
     ifs >> queryarray[i];
   }
+	omp_set_num_threads(core);
+#pragma omp parallel for
   for(int i=0;i<loopnum;i++){
     calcInnerProduct(queryarray+(7*i),resultarray+(6*i),cells[i].first,cells[i].second);
   }
@@ -161,6 +163,8 @@ void PPDPP::Server::addAnsVec(std::string& l_query){
   for(int i=0;i<36;i++){
     ifs >> l_queryvec[i];
   }
+	omp_set_num_threads(core);
+#pragma omp parallel for
   for(int i=0;i<36;i++){
     l_queryvec[( ( (ran_x_a+i)%3 + (3*ran_y_a+(i/3)*3))%9 + (9*dtoi(sequence[lindex])+(i/9)*9) ) % 36].mul(l_table[i]);
   }
@@ -242,6 +246,8 @@ void PPDPP::Client::makeParam(std::string& cparam){
 void PPDPP::Client::makeQuerySet(std::string& query,std::vector< std::pair<int,int> >& cells){
   std::ofstream ofs(query.c_str(), std::ios::binary);
   int loopnum = cells.size();
+	omp_set_num_threads(core);
+#pragma omp parallel for
   for(int i=0;i<loopnum;i++){
     makeQuery(cells[i].first,cells[i].second,queryarray+(i*7));
   }
@@ -294,6 +300,8 @@ void PPDPP::Client::decResultSet(std::string& result,std::vector< std::pair<int,
   for(int i=0;i<6*loopmain;i++){
     ifs >> resultarray[i];
   }
+	omp_set_num_threads(core);
+#pragma omp parallel for
   for(int i=0;i<loopmain;i++){
     decResult(resultarray+(i*6),cells[i].first,cells[i].second);
   }

@@ -47,8 +47,6 @@ int main(int argc,char* argv[]){
 			case 'f':
 				{ 
 					stringfile = optarg;
-  		  	std::ifstream readfile(stringfile.c_str(),std::ios::in);
-        	std::getline(readfile,str);
 					break;
 				}
 			case 'c':
@@ -64,6 +62,9 @@ int main(int argc,char* argv[]){
 				}
 		}
 	}
+
+  std::ifstream readfile(stringfile.c_str(),std::ios::in);
+  std::getline(readfile,str);
 
   PPDPP::Server server(str);
   server.core = core;
