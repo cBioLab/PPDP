@@ -18,12 +18,15 @@ int main(int argc,char* argv[]){
   if(argc == 1){
     str1 = "TAT";
     str2 = "TTT";
-  }else{
+  }else if(argc == 2){
     std::string stringfile = argv[1];
     std::ifstream readfile(stringfile.c_str(),std::ios::in);
     std::getline(readfile,str1);
     std::getline(readfile,str2);
-  }
+  }else{
+		str1 = argv[1];
+		str2 = argv[2];
+	}
   
   ROT::SysInit();
   

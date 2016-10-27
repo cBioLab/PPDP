@@ -1,7 +1,7 @@
 #include "rot.h"
 
 #define DEBUG
-#define NRAND
+//#define NRAND
 
 extern cybozu::RandomGenerator rg;
 
@@ -45,9 +45,6 @@ namespace PPDPP{
 		//相手側,文字列長セット,乱数メモリ確保と初期化,配列メモリ確保
 		void makeParam(std::string& sparam);
 		void readPubkey(std::string& pubfile);
-
-		//map生成→paraDP→(addAnsV). M+N-1回呼び出し
-
 		//入力ファイルと通信回数を受け取り,出力ファイル生成.必要な位置をマップで確保.lindexのセットも.
 		void parallelDP(std::string& queryfile,std::string& resultfile,std::vector< std::pair<int,int> >& cells);
 		//parallelDPから呼び出される.セルの位置と入力ベクトルを渡され出力ベクトルを返す.
@@ -85,9 +82,6 @@ namespace PPDPP{
 		void setLindex(int l,std::vector< std::pair<int,int> >& cells);
 		//相手側文字列セット,x,yメモリ確保と初期化,配列メモリ確保
 		void makeParam(std::string& cparam);
-
-		//map生成→makeQS→decRS→(makeLQ)
-
 		//必要なセルの位置をマップで確保.
 		void makeQuerySet(std::string& query,std::vector< std::pair<int,int> >& cells); 
 		//makeQuerySetから呼び出される.格納先のベクトルのメモリ確保は要検証

@@ -23,7 +23,7 @@ int PPDPP::makePairVec(int turn,int cl,int sl,int threshold,std::vector< std::pa
     std::cerr << "(" << i << "," << j << ") " << i+j << std::endl;
 #endif
     //lindexの条件必要
-    if(j == sl-1 || j == turn + threshold) ret = cells.size()-1;
+    if(i == cl-1 || i == turn + threshold) ret = cells.size()-1;
   }
 #ifdef DEBUG
   if(ret != -1) std::cerr << "lindex : " <<  "(" << cells[ret].first << "," << cells[ret].second << ") " << std::endl;
@@ -38,7 +38,7 @@ void PPDPP::Server::setParam(std::string& cparam){
   ifs >> len_client;
   ifs >> epsilon;
   if(epsilon == 0) epsilon = max(sequence.size(),len_client);
-  if(epsilon < abs(sequence.size()-len_client)) std::cerr << "no answer s " << abs((int)(sequence.size()-len_client)) << std::endl;
+  if(epsilon < abs(len_server-len_client)) std::cerr << "no answer s " << abs(len_server-len_client) << std::endl;
   ran_x = (int*)malloc(len_server*len_client*sizeof(int));
   if(ran_x == NULL) std::cerr << "error ranx" << std::endl;
   ran_y = (int*)malloc(len_server*len_client*sizeof(int));
@@ -60,7 +60,7 @@ void PPDPP::Server::setParam(std::string& cparam){
 }
 
 void PPDPP::Server::setLindex(int l,std::vector< std::pair<int,int> >& cells){
-  lindex = cells[l].second;
+  if(l >= 0) lindex = cells[l].second;
 }
 
 void PPDPP::Server::makeParam(std::string& sparam){
@@ -175,8 +175,8 @@ void PPDPP::Server::makeEditDFile(std::string& ans){
   pub.enc(editD,0,rg);
   for(int i=0;i<ansvec.size();i++){
 #ifdef DEBUG
-    bool b;
-    std::cout << "ans" << i << " : "<< prv.dec(ansvec[i],&b) << std::endl; 
+  bool b;
+  std::cout << "ans" << i << " : "<< prv.dec(ansvec[i],&b) << std::endl; 
 #endif
     editD.add(ansvec[i]);
   }
@@ -230,7 +230,7 @@ void PPDPP::Client::setParam(std::string& sparam){
 }
 
 void PPDPP::Client::setLindex(int l,std::vector< std::pair<int,int> > &cells){
-  lindex = cells[l].first;
+  if(l >= 0) lindex = cells[l].first;
 }
 
 void PPDPP::Client::makeParam(std::string& cparam){
@@ -321,9 +321,25 @@ int PPDPP::Client::decEditD(std::string& Ans){
   std::ifstream ifs(Ans.c_str(), std::ios::binary);
   ifs >> ans;
   int editD = prv.dec(ans, &b);
-  if(!b) std::cerr << "error4" << std::endl;
+  if(!b) std::cerr << "error editD" << std::endl;
   //std::cout << editD + sequence.size() - len_server << std::endl;
-  return editD + sequence.size() - len_server;
+#ifdef DEBUG
+  std::cerr << "x" << std::endl;
+  for(int i=0;i<len_client;i++){
+    for(int j=0;j<len_server;j++){
+      std::cerr << x[i*len_server+j]-1 << " ";
+    }
+    std::cerr << std::endl;
+  }
+  std::cerr << "y" << std::endl;
+  for(int i=0;i<len_client;i++){
+    for(int j=0;j<len_server;j++){
+      std::cerr << y[i*len_server+j]-1 << " ";
+    }
+    std::cerr << std::endl;
+  }
+#endif
+  return editD + len_client - len_server;
 }
 
 
