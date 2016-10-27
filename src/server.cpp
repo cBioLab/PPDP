@@ -19,16 +19,10 @@ int main(int argc,char* argv[]){
 	s_time = start_sec;
 
   std::string str;
+	std::string stringfile;
 	int sock;
-	int port = 4444;	
-
-  if(argc == 1){
-    str = "TATATATA";
-  }else if(argc == 2){
-    std::string stringfile = argv[1];
-    std::ifstream readfile(stringfile.c_str(),std::ios::in);
-    std::getline(readfile,str);
-  }
+	int port;
+	int core;
   
   ROT::SysInit();
   
@@ -40,12 +34,42 @@ int main(int argc,char* argv[]){
   std::string resultfile = "../comm/server/result.dat";
   std::string l_queryfile = "../comm/server/l_query.dat";
   std::string ansfile = "../comm/server/ans.dat";
-	
-  std::cerr << str << std::endl;
-  
+
+	//-p port -f WMfile -c core -e epsilon
+	int opt;
+	while((opt = getopt(argc, argv, "p:f:c:")) != -1){
+		switch(opt){
+			case 'p':
+				{
+					port = atoi(optarg);
+					break;
+				}
+			case 'f':
+				{ 
+					stringfile = optarg;
+  		  	std::ifstream readfile(stringfile.c_str(),std::ios::in);
+        	std::getline(readfile,str);
+					break;
+				}
+			case 'c':
+				{ 
+					core = atoi(optarg);
+					break;
+				}
+			default:
+				{
+					fprintf(stderr,"error! \'%c\' \'%c\'\n", opt, optopt);
+					return -1;
+					break;
+				}
+		}
+	}
+
   PPDPP::Server server(str);
-  server.core = 2;
-  
+  server.core = core;
+
+  std::cerr << str << std::endl;
+
 	e_time = get_wall_time();
 	calc_time += e_time-s_time;
 

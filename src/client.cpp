@@ -20,18 +20,12 @@ int main(int argc,char* argv[]){
 
   std::string str;
 	int sock;
-	int port = 4444;
-	std::string hostname = "localhost";
+	int port;
+	std::string hostname;
+	std::string stringfile;
 	int sendsize = 0;
 	int recvsize = 0;
-	
-  if(argc == 1){
-    str = "ATGTATAT";
-  }else if(argc == 2){
-    std::string stringfile = argv[1];
-    std::ifstream readfile(stringfile.c_str(),std::ios::in);
-    std::getline(readfile,str);
-  }
+	int core,epsilon=-1;;
 
   ROT::SysInit();
   
@@ -43,12 +37,52 @@ int main(int argc,char* argv[]){
   std::string resultfile = "../comm/client/result.dat";
   std::string l_queryfile = "../comm/client/l_query.dat";
   std::string ansfile = "../comm/client/ans.dat";
-	
-  std::cerr << str << std::endl;
+  
+	//-h hostname -p port -f queryfile -c core
+	int opt;
+	while((opt = getopt(argc, argv, "h:p:f:c:e:")) != -1){
+		switch(opt){
+			case 'h':
+				{
+					hostname = optarg;
+					break;
+				}
+			case 'p':
+				{
+					port = atoi(optarg);
+					break;
+				}
+			case 'f':
+				{ 
+					stringfile = optarg;
+ 					std::ifstream readfile(stringfile.c_str(),std::ios::in);
+  				std::getline(readfile,str);
+					break;
+				}
+			case 'c':
+				{ 
+					core = atoi(optarg);
+					break;
+				}
+			case 'e':
+				{ 
+					epsilon = atoi(optarg);
+					break;
+				}
+			default:
+				{
+					fprintf(stderr,"error! \'%c\' \'%c\'\n", opt, optopt);
+					return -1;
+					break;
+				}
+		}
+	}
 
   PPDPP::Client client(str);	
-  client.core = 1;
-  
+  std::cerr << str << std::endl;
+	client.core = core;
+	client.epsilon = epsilon;
+
 	e_time = get_wall_time();
 	calc_time += e_time-s_time;
 
@@ -73,7 +107,7 @@ int main(int argc,char* argv[]){
 	s_time = get_wall_time(); 
   int sl = client.len_server;
   int cl = client.len_client;
-  int epsilon = client.epsilon;
+  epsilon = client.epsilon;
   std::vector< std::pair<int,int> > cells;
 	int li;
 	e_time = get_wall_time();
