@@ -1,6 +1,6 @@
 #include "rot.h"
 
-#define DEBUG
+//#define DEBUG
 //#define NRAND
 
 extern cybozu::RandomGenerator rg;

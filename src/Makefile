@@ -10,7 +10,7 @@ CLIENT_OBJS=$(ROT_OBJ) ppdpp.o $(COMM_OBJ) client.o
 PPDPP_OBJS= $(ROT_OBJ) ppdpp.o ppdpp_main.o
 MCL_LIB=../../mcl/lib/libmcl.a
 
-all: pbwt_sec ppdpp_main
+all: pbwt_sec ppdpp_main server client
 
 pbwt_sec:
 	make -C ../../PBWT-sec/src/
@@ -25,6 +25,7 @@ clean:
 
 ppdpp_main: $(PPDPP_OBJS) $(MCL_LIB)
 	mkdir -p ../bin/
+	mkdir -p ../comm/
 	$(CXX) $(PPDPP_OBJS) -o $@ $(LDFLAGS) -fopenmp
 	mv ppdpp_main $(TOPDIR)../bin/
 
