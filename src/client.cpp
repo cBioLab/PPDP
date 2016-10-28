@@ -130,15 +130,13 @@ int main(int argc,char* argv[]){
     client.decResultSet(resultfile,cells);
 		e_time = get_wall_time();
 		calc_time += e_time-s_time;
-    if(li != -1){
-			s_time = get_wall_time();
-      client.makeLQuery(l_queryfile);
-			e_time = get_wall_time();
-			calc_time += e_time-s_time;
-
-			sendsize+=sendFile(sock,(char *)l_queryfile.c_str());
-    }
   }
+	s_time = get_wall_time();
+  client.makeLQuerySet(l_queryfile);
+	e_time = get_wall_time();
+	calc_time += e_time-s_time;
+
+	sendsize+=sendFile(sock,(char *)l_queryfile.c_str());
 	recvsize+=recvFile(sock,(char *)ansfile.c_str());
 
 	s_time = get_wall_time();

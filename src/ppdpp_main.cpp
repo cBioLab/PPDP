@@ -76,12 +76,9 @@ int main(int argc,char* argv[]){
     client.makeQuerySet(queryfile,cells);
     server.parallelDP(queryfile,resultfile,cells);
     client.decResultSet(resultfile,cells);
-    if(li != -1){
-      client.makeLQuery(l_queryfile);
-      server.addAnsVec(l_queryfile);
-    }
   }
-  server.makeEditDFile(ansfile);
+  client.makeLQuerySet(l_queryfile);
+  server.makeEditDFile(l_queryfile,ansfile);
   int ans = client.decEditD(ansfile);
   std::cout << "Edit distance : " << ans << std::endl;
   if(ans == PPDPP::edit_check(str1,str2)) std::cerr << "ok" << std::endl;

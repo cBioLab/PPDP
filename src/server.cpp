@@ -119,17 +119,11 @@ int main(int argc,char* argv[]){
 		calc_time += e_time-s_time; 
 
 		sendFile(sock,(char *)resultfile.c_str());
-    if(li != -1){
-			recvFile(sock,(char *)l_queryfile.c_str());
-    	
-			s_time = get_wall_time();
-  		server.addAnsVec(l_queryfile);
-			e_time = get_wall_time();
-			calc_time += e_time-s_time; 
-    }
   }
+	recvFile(sock,(char *)l_queryfile.c_str());
+
 	s_time = get_wall_time();
-  server.makeEditDFile(ansfile);
+  server.makeEditDFile(l_queryfile,ansfile);
 	e_time = get_wall_time();
 	calc_time += e_time-s_time; 
 

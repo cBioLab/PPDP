@@ -26,13 +26,13 @@ namespace PPDPP{
 		Elgamal::PublicKey pub;
 		Elgamal::CipherText *queryarray;
 		Elgamal::CipherText *resultarray;
-		CipherTextVec l_queryvec;
+		Elgamal::CipherText *lqueryarray;
+		Elgamal::CipherText *ansarray;
 		std::string sequence;
 		int *ran_x;
 		int *ran_y;
-		int ran_x_a;
-		int ran_y_a;
-		CipherTextVec ansvec;
+		int *ran_x_a;
+		int *ran_y_a;
 	public:
 		int core;
 		int len_client;
@@ -49,11 +49,10 @@ namespace PPDPP{
 		void parallelDP(std::string& queryfile,std::string& resultfile,std::vector< std::pair<int,int> >& cells);
 		//parallelDPから呼び出される.セルの位置と入力ベクトルを渡され出力ベクトルを返す.
 		void calcInnerProduct(Elgamal::CipherText *query,Elgamal::CipherText *ret,int turn_c,int turn_s);
-		void addAnsVec(std::string& lqueryfile); //セルの位置はlindexで知らせる.
-		void makeEditDFile(std::string& ans); //返答用ベクトルの要素を足しこんでファイルに書き込み.
+		void makeEditDFile(std::string& lqueryfile,std::string& ans); //返答用ベクトルの要素を足しこんでファイルに書き込み
+		void calcLInnerProduct(Elgamal::CipherText *lqueryvec,Elgamal::CipherText *lretvec,int s_index);
 		Server(std::string &str){
 			sequence = str;
-			l_queryvec.resize(36);
 			std::cerr << "make server" << std::endl;
 			len_server = sequence.size();
 		}
@@ -64,10 +63,11 @@ namespace PPDPP{
 
 	class Client{
 		std::string sequence;
-		int lx,ly;
+		int *lx,*ly,*ll;
 		int *x,*y;
 		Elgamal::CipherText *queryarray;
 		Elgamal::CipherText *resultarray;
+		Elgamal::CipherText *lqueryarray;
 		Elgamal::PublicKey pub;
 		Elgamal::PrivateKey prv;
 	public:
@@ -84,9 +84,10 @@ namespace PPDPP{
 		void makeParam(std::string& cparam);
 		//必要なセルの位置をマップで確保.
 		void makeQuerySet(std::string& query,std::vector< std::pair<int,int> >& cells); 
-		//makeQuerySetから呼び出される.格納先のベクトルのメモリ確保は要検証
+		//makeQuerySetから呼び出される.
 		void makeQuery(int turn_c,int turn_s,Elgamal::CipherText *queryvec);
-		void makeLQuery(std::string& l_query);
+		void makeLQuerySet(std::string& l_query);
+		void makeLQuery(Elgamal::CipherText *lqueryvec,int index);//indexはlx,ly,llの位置
 		void decResultSet(std::string& result,std::vector< std::pair<int,int> >& cells);
 		//decResultSetからの呼び出し.位置を知らせてx,yを更新する
 		void decResult(Elgamal::CipherText *resultvec,int turn_c,int turn_s);
