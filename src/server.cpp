@@ -28,7 +28,6 @@ int main(int argc,char* argv[]){
   
   std::string sparam = "../comm/server/sparam.dat";
   std::string cparam = "../comm/server/cparam.dat";
-  std::string prvfile = "../comm/server/prv.dat";
   std::string pubfile = "../comm/server/pub.dat";
   std::string queryfile = "../comm/server/query.dat";
   std::string resultfile = "../comm/server/result.dat";
@@ -103,6 +102,13 @@ int main(int argc,char* argv[]){
 	int li;
 	e_time = get_wall_time();
 	calc_time += e_time-s_time;  
+
+#ifdef DEBUG
+  std::string prvfile = "../comm/client/prv.dat";
+  ROT::Load(server.prv, prvfile);
+  std::cerr << "Server received prvKey" << std::endl;
+  server.prv.setCache(0, max(max(sl,cl),37)); // set cache for prv
+#endif
   
   for(int i=0;i<sl+cl-1;i++){
 		s_time = get_wall_time();

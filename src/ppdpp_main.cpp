@@ -16,8 +16,8 @@ int main(int argc,char* argv[]){
   std::string str1,str2;
 	
   if(argc == 1){
-    str1 = "TAT";
-    str2 = "TTT";
+    str1 = "TATATATA";
+    str2 = "ATGTATAT";
   }else if(argc == 2){
     std::string stringfile = argv[1];
     std::ifstream readfile(stringfile.c_str(),std::ios::in);
@@ -45,9 +45,10 @@ int main(int argc,char* argv[]){
   PPDPP::Server server(str1);
   PPDPP::Client client(str2);	
   
-  server.core = 2;
-  client.core = 1;
-  
+  server.core = 1;
+  client.core = 1;  
+	client.epsilon = 4;
+
   server.makeParam(sparam);
   client.makeParam(cparam);
   
