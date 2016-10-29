@@ -1,0 +1,81 @@
+10---------------------------------
+make client
+AAAAAAAAAAAAAAAAAAAAGAAAAAAAAAAAATTAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+Client created prv and pub
+Edit distance : 4
+client calc_time : 3.08909s
+total time : 22.1802s
+comsize : 5.16821MB
+20---------------------------------
+make client
+AAAAAAAAAAAAAAAAAAAAGAAAAAAAAAAAATTAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+Client created prv and pub
+Edit distance : 4
+client calc_time : 5.48449s
+total time : 26.5099s
+comsize : 9.40267MB
+30---------------------------------
+make client
+AAAAAAAAAAAAAAAAAAAAGAAAAAAAAAAAATTAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+Client created prv and pub
+Edit distance : 4
+client calc_time : 5.99422s
+total time : 26.9457s
+comsize : 13.1419MB
+40---------------------------------
+make client
+AAAAAAAAAAAAAAAAAAAAGAAAAAAAAAAAATTAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+Client created prv and pub
+Edit distance : 4
+client calc_time : 7.37715s
+total time : 29.0926s
+comsize : 16.3858MB
+50---------------------------------
+make client
+AAAAAAAAAAAAAAAAAAAAGAAAAAAAAAAAATTAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+Client created prv and pub
+Edit distance : 4
+client calc_time : 7.67726s
+total time : 27.9934s
+comsize : 19.1342MB
+60---------------------------------
+make client
+AAAAAAAAAAAAAAAAAAAAGAAAAAAAAAAAATTAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+Client created prv and pub
+Edit distance : 4
+client calc_time : 6.77818s
+total time : 24.529s
+comsize : 21.3878MB
+70---------------------------------
+make client
+AAAAAAAAAAAAAAAAAAAAGAAAAAAAAAAAATTAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+Client created prv and pub
+Edit distance : 4
+client calc_time : 7.48084s
+total time : 25.0114s
+comsize : 23.1459MB
+80---------------------------------
+make client
+AAAAAAAAAAAAAAAAAAAAGAAAAAAAAAAAATTAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+Client created prv and pub
+Edit distance : 4
+client calc_time : 7.30947s
+total time : 25.8058s
+comsize : 24.4089MB
+90---------------------------------
+make client
+AAAAAAAAAAAAAAAAAAAAGAAAAAAAAAAAATTAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+Client created prv and pub
+Edit distance : 4
+client calc_time : 7.24486s
+total time : 25.8015s
+comsize : 25.1766MB
+100---------------------------------
+make client
+AAAAAAAAAAAAAAAAAAAAGAAAAAAAAAAAATTAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+Client created prv and pub
+Edit distance : 4
+client calc_time : 7.7867s
+total time : 27.2152s
+comsize : 25.4488MB
+
