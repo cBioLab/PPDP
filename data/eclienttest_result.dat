@@ -3,79 +3,79 @@ make client
 AAAAAAAAAAAAAAAAAAAAGAAAAAAAAAAAATTAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 Client created prv and pub
 Edit distance : 4
-client calc_time : 3.08909s
-total time : 22.1802s
-comsize : 5.16821MB
+client calc_time : 1.86661s
+total time : 19.4267s
+comsize : 5.16819MB
 20---------------------------------
 make client
 AAAAAAAAAAAAAAAAAAAAGAAAAAAAAAAAATTAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 Client created prv and pub
 Edit distance : 4
-client calc_time : 5.48449s
-total time : 26.5099s
-comsize : 9.40267MB
+client calc_time : 3.86103s
+total time : 22.9107s
+comsize : 9.40256MB
 30---------------------------------
 make client
 AAAAAAAAAAAAAAAAAAAAGAAAAAAAAAAAATTAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 Client created prv and pub
 Edit distance : 4
-client calc_time : 5.99422s
-total time : 26.9457s
-comsize : 13.1419MB
+client calc_time : 4.27027s
+total time : 24.2974s
+comsize : 13.1415MB
 40---------------------------------
 make client
 AAAAAAAAAAAAAAAAAAAAGAAAAAAAAAAAATTAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 Client created prv and pub
 Edit distance : 4
-client calc_time : 7.37715s
-total time : 29.0926s
-comsize : 16.3858MB
+client calc_time : 4.77483s
+total time : 25.7649s
+comsize : 16.3856MB
 50---------------------------------
 make client
 AAAAAAAAAAAAAAAAAAAAGAAAAAAAAAAAATTAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 Client created prv and pub
 Edit distance : 4
-client calc_time : 7.67726s
-total time : 27.9934s
-comsize : 19.1342MB
+client calc_time : 5.4821s
+total time : 24.5104s
+comsize : 19.1344MB
 60---------------------------------
 make client
 AAAAAAAAAAAAAAAAAAAAGAAAAAAAAAAAATTAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 Client created prv and pub
 Edit distance : 4
-client calc_time : 6.77818s
-total time : 24.529s
-comsize : 21.3878MB
+client calc_time : 4.95779s
+total time : 21.8843s
+comsize : 21.3877MB
 70---------------------------------
 make client
 AAAAAAAAAAAAAAAAAAAAGAAAAAAAAAAAATTAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 Client created prv and pub
 Edit distance : 4
-client calc_time : 7.48084s
-total time : 25.0114s
+client calc_time : 5.7925s
+total time : 22.766s
 comsize : 23.1459MB
 80---------------------------------
 make client
 AAAAAAAAAAAAAAAAAAAAGAAAAAAAAAAAATTAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 Client created prv and pub
 Edit distance : 4
-client calc_time : 7.30947s
-total time : 25.8058s
-comsize : 24.4089MB
+client calc_time : 5.6153s
+total time : 22.5892s
+comsize : 24.4088MB
 90---------------------------------
 make client
 AAAAAAAAAAAAAAAAAAAAGAAAAAAAAAAAATTAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 Client created prv and pub
 Edit distance : 4
-client calc_time : 7.24486s
-total time : 25.8015s
-comsize : 25.1766MB
+client calc_time : 5.90284s
+total time : 24.312s
+comsize : 25.1763MB
 100---------------------------------
 make client
 AAAAAAAAAAAAAAAAAAAAGAAAAAAAAAAAATTAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 Client created prv and pub
 Edit distance : 4
-client calc_time : 7.7867s
-total time : 27.2152s
-comsize : 25.4488MB
+client calc_time : 5.48936s
+total time : 24.1869s
+comsize : 25.4484MB
 

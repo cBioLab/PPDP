@@ -2,50 +2,49 @@
 make server
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 Server received pubKey
-server calc_time : 3.37642s
+server calc_time : 1.92139s
 1---------------------------------
 make server
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 Server received pubKey
-server calc_time : 5.34589s
+server calc_time : 3.34647s
 2---------------------------------
 make server
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 Server received pubKey
-server calc_time : 6.31354s
+server calc_time : 4.64536s
 3---------------------------------
 make server
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 Server received pubKey
-server calc_time : 7.3095s
+server calc_time : 5.59716s
 4---------------------------------
 make server
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 Server received pubKey
-server calc_time : 7.89559s
+server calc_time : 6.49577s
 5---------------------------------
 make server
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 Server received pubKey
-server calc_time : 8.46136s
+server calc_time : 7.2311s
 6---------------------------------
 make server
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 Server received pubKey
-server calc_time : 8.64912s
+server calc_time : 7.64512s
 7---------------------------------
 make server
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 Server received pubKey
-server calc_time : 9.73716s
+server calc_time : 7.93086s
 8---------------------------------
 make server
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 Server received pubKey
-server calc_time : 9.3918s
+server calc_time : 8.5441s
 9---------------------------------
 make server
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 Server received pubKey
-server calc_time : 9.95811s
-
+server calc_time : 8.85896s
