@@ -47,7 +47,7 @@ int main(int argc,char* argv[]){
   
   server.core = 1;
   client.core = 1;  
-	client.epsilon = 4;
+	client.epsilon = 0;
 
   server.makeParam(sparam);
   client.makeParam(cparam);

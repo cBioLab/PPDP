@@ -1,0 +1,51 @@
+../data/server/10.dat---------------------------------
+make server
+AATGGCGACT
+Server received pubKey
+server calc_time : 0.205749s
+../data/server/20.dat---------------------------------
+make server
+AACCTAAGATTATTCCTAAT
+Server received pubKey
+server calc_time : 0.641729s
+../data/server/30.dat---------------------------------
+make server
+CGTGAAGAGATTAAGAGGATTGTTGAATTC
+Server received pubKey
+server calc_time : 1.44964s
+../data/server/40.dat---------------------------------
+make server
+GGTGTCATGTAAGATATCCTGAGGAATTGTCGTACGACGT
+Server received pubKey
+server calc_time : 2.09663s
+../data/server/50.dat---------------------------------
+make server
+TACTAGGACTAAATTGTGGGATCCCCGGCTGGTTGAACAGCACCATGGGA
+Server received pubKey
+server calc_time : 3.06254s
+../data/server/60.dat---------------------------------
+make server
+GCGTTGCTTCAAATTCCCGTATTTAATCGACTTTCTCAGCTACCGAGTTCTGGGAGATGT
+Server received pubKey
+server calc_time : 4.1218s
+../data/server/70.dat---------------------------------
+make server
+TTGTAACAGGACCAGCAGAAGGGGCGTTTCCGGGGGTTACTAAGACACCACCTCCATGTATATAATGGGC
+Server received pubKey
+server calc_time : 5.2017s
+../data/server/80.dat---------------------------------
+make server
+CGCCTAGTATAGCCTGTGTTGGTATTGGCTGCAGAGTATGCAGGGCGATAATCTTTATCCCTATAAAAGCCTCATCCAAG
+Server received pubKey
+server calc_time : 6.55383s
+../data/server/90.dat---------------------------------
+make server
+AAGGCGGAAAGTTAGCCCGACGCAGGAGCCCACGCCCGATGCCCTTCCGCACGGCTGTCTCGCGTGGGTCGGGTAACTACGCAACGCAAA
+Server received pubKey
+server calc_time : 7.91478s
+../data/server/100.dat---------------------------------
+make server
+CTGCGGTGAAAAGGCCGCAGCGCGACAGCAAAAACATATCTGAGCCCGTCACTGGAGCCGGCAACGCTTGGGAATCACACTGCCCAACAGTGTCCCAATC
+Server received pubKey
+server calc_time : 9.87882s
+

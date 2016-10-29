@@ -1,8 +1,8 @@
 #!/bin/bash
 
-path="../data/test/test"
+path="../data/test2/"
 
-for i in $(seq 1 100)
+for i in $(seq 1 99)
 do
 	filename="$path$i.dat"
 	$filename
