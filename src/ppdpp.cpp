@@ -28,7 +28,7 @@ int PPDPP::makePairVec(int turn,int cl,int sl,int threshold,std::vector< std::pa
 #ifdef DEBUG
   if(ret != -1) std::cerr << "lindex : " <<  "(" << cells[ret].first << "," << cells[ret].second << ") " << std::endl;
 #endif
-
+  
   return ret;
 }
 
@@ -65,7 +65,7 @@ void PPDPP::Server::setParam(std::string& cparam){
 
 void PPDPP::Server::setLindex(int l,std::vector< std::pair<int,int> >& cells){
   if(l >= 0) lindex = cells[l].second;
-	else lindex = -1;
+  else lindex = -1;
 }
 
 void PPDPP::Server::makeParam(std::string& sparam){
@@ -99,8 +99,8 @@ void PPDPP::Server::calcInnerProduct(Elgamal::CipherText *query,Elgamal::CipherT
   CipherTextVec queryvec;
   queryvec.resize(7);
 #ifdef DEBUG
-	bool b;
-	int iip;
+  bool b;
+  int iip;
 #endif
   for(int i=0;i<7;i++){
     queryvec[i] = query[i];
@@ -176,11 +176,11 @@ void PPDPP::Server::makeEditDFile(std::string& l_query,std::string& ans){
   for(int i=0;i<36*len_server;i++){
     ifs >> lqueryarray[i];
   }
-	omp_set_num_threads(core);
+  omp_set_num_threads(core);
 #pragma omp parallel for
-	for(int i=0;i<len_server;i++){
-		calcLInnerProduct(lqueryarray+(i*36),ansarray+i,i);
-	}
+  for(int i=0;i<len_server;i++){
+    calcLInnerProduct(lqueryarray+(i*36),ansarray+i,i);
+  }
   Elgamal::CipherText editD;
   pub.enc(editD,0,rg);
   for(int i=0;i<len_server;i++){
@@ -245,7 +245,7 @@ void PPDPP::Client::setParam(std::string& sparam){
 
 void PPDPP::Client::setLindex(int l,std::vector< std::pair<int,int> > &cells){
   if(l >= 0) lindex = cells[l].first;
-	else lindex = -1;
+  else lindex = -1;
 }
 
 void PPDPP::Client::makeParam(std::string& cparam){
@@ -257,7 +257,7 @@ void PPDPP::Client::makeParam(std::string& cparam){
 void PPDPP::Client::makeQuerySet(std::string& query,std::vector< std::pair<int,int> >& cells){
   std::ofstream ofs(query.c_str(), std::ios::binary);
   int loopnum = cells.size();
-	omp_set_num_threads(core);
+  omp_set_num_threads(core);
 #pragma omp parallel for
   for(int i=0;i<loopnum;i++){
     makeQuery(cells[i].first,cells[i].second,queryarray+(i*7));
@@ -289,16 +289,16 @@ void PPDPP::Client::makeQuery(int turn_c,int turn_s,Elgamal::CipherText *queryve
 
 void PPDPP::Client::makeLQuerySet(std::string& l_query){
 #ifdef DEBUG
-	for(int i=0;i<len_server;i++){
-		std::cerr << lx[i] << " " << ly[i] << " " << ll[i] << std::endl;
-	}
+  for(int i=0;i<len_server;i++){
+    std::cerr << lx[i] << " " << ly[i] << " " << ll[i] << std::endl;
+  }
 #endif
   std::ofstream ofs(l_query.c_str(), std::ios::binary);
-	omp_set_num_threads(core);
+  omp_set_num_threads(core);
 #pragma omp parallel for
-	for(int i=0;i<len_server;i++){
-		makeLQuery(lqueryarray+(i*36),i);
-	}
+  for(int i=0;i<len_server;i++){
+    makeLQuery(lqueryarray+(i*36),i);
+  }
   for(int i=0;i<len_server*36;i++){
     ofs << lqueryarray[i];
     ofs << "\n";
@@ -318,7 +318,7 @@ void PPDPP::Client::decResultSet(std::string& result,std::vector< std::pair<int,
   for(int i=0;i<6*loopmain;i++){
     ifs >> resultarray[i];
   }
-	omp_set_num_threads(core);
+  omp_set_num_threads(core);
 #pragma omp parallel for
   for(int i=0;i<loopmain;i++){
     decResult(resultarray+(i*6),cells[i].first,cells[i].second);

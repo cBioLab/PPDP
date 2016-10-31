@@ -24,9 +24,9 @@ int main(int argc,char* argv[]){
     std::getline(readfile,str1);
     std::getline(readfile,str2);
   }else{
-		str1 = argv[1];
-		str2 = argv[2];
-	}
+    str1 = argv[1];
+    str2 = argv[2];
+  }
   
   ROT::SysInit();
   
@@ -47,7 +47,7 @@ int main(int argc,char* argv[]){
   
   server.core = 1;
   client.core = 1;  
-	client.epsilon = 0;
+  client.epsilon = 0;
 
   server.makeParam(sparam);
   client.makeParam(cparam);
