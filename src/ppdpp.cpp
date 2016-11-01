@@ -1,19 +1,19 @@
 #include "ppdpp.h"
 
 int PPDPP::dtoi(char c,int sigma){
-	switch(sigma){
-    case 4:
-      {
-        switch(c){
-          case 'A': return 0;
-          case 'C': return 1;
-          case 'G': return 2;
-          case 'T': return 3;
-          default : std::cerr << "error1 : " << c << std::endl;
-                    return -1;
-        }
+  switch(sigma){
+  case 4:
+    {
+      switch(c){
+      case 'A': return 0;
+      case 'C': return 1;
+      case 'G': return 2;
+      case 'T': return 3;
+      default : std::cerr << "error1 : " << c << std::endl;
+	return -1;
       }
-    case 26: return (c - 'a');
+    }
+  case 26: return (c - 'a');
   }
 }
 
@@ -110,7 +110,7 @@ void PPDPP::Server::parallelDP(std::string& queryfile,std::string& resultfile,st
   for(int i=0;i<querysize*loopnum;i++){
     ifs >> queryarray[i];
   }
-	omp_set_num_threads(core);
+  omp_set_num_threads(core);
 #pragma omp parallel for
   for(int i=0;i<loopnum;i++){
     calcInnerProduct(queryarray+(querysize*i),resultarray+(resultsize*i),cells[i].first,cells[i].second);
@@ -187,8 +187,8 @@ void PPDPP::Server::calcInnerProduct(Elgamal::CipherText *query,Elgamal::CipherT
 }
 
 void PPDPP::Server::calcLInnerProduct(Elgamal::CipherText *lqueryvec,Elgamal::CipherText *lret,int s_index){
- pub.enc((*lret),0,rg);
- for(int i=0;i<tablevecsize;i++){
+  pub.enc((*lret),0,rg);
+  for(int i=0;i<tablevecsize;i++){
     lqueryvec[( ( (ran_x_a[s_index]+i)%SBLOCK + (SBLOCK*ran_y_a[s_index]+(i/SBLOCK)*SBLOCK))%LBLOCK + (LBLOCK*dtoi(sequence[s_index],sigma)+(i/LBLOCK)*LBLOCK) ) % tablevecsize].mul(l_table[i]);
   }
   for(int i=0;i<tablevecsize;i++){
@@ -210,8 +210,8 @@ void PPDPP::Server::makeEditDFile(std::string& l_query,std::string& ans){
   pub.enc(editD,0,rg);
   for(int i=0;i<len_server;i++){
 #ifdef DEBUG
-  bool b;
-  std::cout << "ans" << i << " : "<< prv.dec(ansarray[i],&b) << std::endl; 
+    bool b;
+    std::cout << "ans" << i << " : "<< prv.dec(ansarray[i],&b) << std::endl; 
 #endif
     editD.add(ansarray[i]);
   }
@@ -363,7 +363,7 @@ void PPDPP::Client::decResult(Elgamal::CipherText *resultvec,int turn_c,int turn
   if(lindex == turn_c){
     lx[turn_s] = x[index];
     ly[turn_s] = y[index];
-		ll[turn_s] = lindex;
+    ll[turn_s] = lindex;
   }
   if(turn_s != len_server-1) x[turn_c*len_server+(turn_s+1)] = ret / SBLOCK;
   if(turn_c != len_client-1) y[(turn_c+1)*len_server+turn_s] = ret % SBLOCK;
