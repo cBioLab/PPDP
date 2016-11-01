@@ -23,6 +23,7 @@ int main(int argc,char* argv[]){
   int sock;
   int port;
   int core;
+  int sigma = 4;
 	
   ROT::SysInit();
   
@@ -36,7 +37,7 @@ int main(int argc,char* argv[]){
   
   //-p port -f WMfile -c core -e epsilon
   int opt;
-  while((opt = getopt(argc, argv, "p:f:c:")) != -1){
+  while((opt = getopt(argc, argv, "p:f:c:s:")) != -1){
     switch(opt){
     case 'p':
       {
@@ -53,6 +54,11 @@ int main(int argc,char* argv[]){
 	core = atoi(optarg);
 	break;
 				}
+    case 's':
+      { 
+	sigma = atoi(optarg);
+	break;
+				}
     default:
       {
 	fprintf(stderr,"error! \'%c\' \'%c\'\n", opt, optopt);
@@ -67,6 +73,7 @@ int main(int argc,char* argv[]){
   
   PPDPP::Server server(str);
   server.core = core;
+  server.sigma = sigma;
   
   std::cerr << str << std::endl;
   

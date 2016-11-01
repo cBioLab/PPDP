@@ -27,6 +27,7 @@ int main(int argc,char* argv[]){
   int recvsize = 0;
   int core = 1;
   int epsilon=0;
+  int sigma = 4;
 
   ROT::SysInit();
   
@@ -41,7 +42,7 @@ int main(int argc,char* argv[]){
   
   //-h hostname -p port -f queryfile -c core
   int opt;
-  while((opt = getopt(argc, argv, "h:p:f:c:e:")) != -1){
+  while((opt = getopt(argc, argv, "h:p:f:c:e:s:")) != -1){
     switch(opt){
     case 'h':
       {
@@ -68,6 +69,11 @@ int main(int argc,char* argv[]){
 	epsilon = atoi(optarg);
 	break;
       }
+    case 's':
+      { 
+	sigma = atoi(optarg);
+	break;
+      }
     default:
       {
 	fprintf(stderr,"error! \'%c\' \'%c\'\n", opt, optopt);
@@ -84,6 +90,7 @@ int main(int argc,char* argv[]){
   std::cerr << str << std::endl;
   client.core = core;
   client.epsilon = epsilon;
+  client.sigma = sigma;
 
   e_time = get_wall_time();
   calc_time += e_time-s_time;

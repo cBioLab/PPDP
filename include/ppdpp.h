@@ -3,6 +3,9 @@
 //#define DEBUG
 //#define NRAND
 
+#define SBLOCK 3
+#define LBLOCK 9
+
 extern cybozu::RandomGenerator rg;
 
 #define max(a,b) ((a>b) ? a : b)
@@ -12,10 +15,10 @@ extern cybozu::RandomGenerator rg;
 
 namespace PPDPP{
 
-	int dtoi(char c);
+	int dtoi(char c,int sigma);
 
-	const int l_table[36] = {2,1,0,2,1,0,2,1,0,2,1,0,2,2,1,2,2,1,2,1,0,2,2,1,2,2,1,2,1,0,2,2,1,2,2,1};
-	const int table[36] = {8,5,2,7,4,1,6,3,0,8,5,2,7,8,5,6,7,4,8,5,2,7,8,5,6,7,4,8,5,2,7,8,5,6,7,4};
+	const int L_Table[18] = {2,1,0,2,1,0,2,1,0,2,1,0,2,2,1,2,2,1};
+	const int Table[18] = {8,5,2,7,4,1,6,3,0,8,5,2,7,8,5,6,7,4};
 
 	int edit_check(std::string &s,std::string &c);
 
@@ -34,6 +37,11 @@ namespace PPDPP{
 		int *ran_x_a;
 		int *ran_y_a;
 	public:
+    int sigma;
+    int tablesize;
+    int tablevecsize;
+    int querysize,resultsize;
+    int *l_table,*table;
 		int core;
 		int len_client;
 		int len_server;
@@ -71,6 +79,10 @@ namespace PPDPP{
 		Elgamal::PublicKey pub;
 		Elgamal::PrivateKey prv;
 	public:
+    int sigma;
+    int tablesize;
+    int tablevecsize;
+    int querysize,resultsize;
 		int core;
 		int len_client;
 		int len_server;
