@@ -2,6 +2,7 @@
 
 int PPDPP::dtoi(char c,int sigma){
   switch(sigma){
+  case 2: return (c - '0');
   case 4:
     {
       switch(c){
