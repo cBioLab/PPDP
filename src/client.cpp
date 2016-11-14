@@ -118,15 +118,17 @@ int main(int argc,char* argv[]){
   int cl = client.len_client;
   epsilon = client.epsilon;
   std::vector< std::pair<int,int> > cells;
+  int cells_len = min(sl,cl);
+  cells.resize(cells_len);
   int li;
   e_time = get_wall_time();
   calc_time += e_time-s_time;  
   
   for(int i=0;i<sl+cl-1;i++){
     s_time = get_wall_time(); 
-    li = PPDPP::makePairVec(i,cl,sl,epsilon,cells);
+    li = PPDPP::makePairVec(i,cl,sl,epsilon,cells,cells_len);
     client.setLindex(li,cells);
-    client.makeQuerySet(queryfile,cells);
+    client.makeQuerySet(queryfile,cells,cells_len);
     e_time = get_wall_time();
     calc_time += e_time-s_time;
     
@@ -134,7 +136,7 @@ int main(int argc,char* argv[]){
     recvsize+=recvFile(sock,(char *)resultfile.c_str());
     
     s_time = get_wall_time();
-    client.decResultSet(resultfile,cells);
+    client.decResultSet(resultfile,cells,cells_len);
     e_time = get_wall_time();
     calc_time += e_time-s_time;
   }

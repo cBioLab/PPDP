@@ -1,6 +1,6 @@
 #!/bin/bash
 
-path="../data/test3/"
+path="../data/test2/"
 
 for i in $(seq 1 99)
 do

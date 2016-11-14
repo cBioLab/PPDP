@@ -47,9 +47,9 @@ int main(int argc,char* argv[]){
   
   server.core = 1;
   client.core = 1;  
-  client.epsilon = 6;
-  server.sigma = 2;
-  client.sigma = 2;
+  client.epsilon = 0;
+  server.sigma = 4;
+  client.sigma = 4;
 
   server.makeParam(sparam);
   client.makeParam(cparam);
@@ -71,14 +71,16 @@ int main(int argc,char* argv[]){
 #endif
 
   std::vector< std::pair<int,int> > cells;
+  int cells_len = min(sl,cl);
+  cells.resize(cells_len);
     
   for(int i=0;i<sl+cl-1;i++){
-    int li = PPDPP::makePairVec(i,cl,sl,epsilon,cells);
+    int li = PPDPP::makePairVec(i,cl,sl,epsilon,cells,cells_len);
     server.setLindex(li,cells);
     client.setLindex(li,cells);
-    client.makeQuerySet(queryfile,cells);
-    server.parallelDP(queryfile,resultfile,cells);
-    client.decResultSet(resultfile,cells);
+    client.makeQuerySet(queryfile,cells,cells_len);
+    server.parallelDP(queryfile,resultfile,cells,cells_len);
+    client.decResultSet(resultfile,cells,cells_len);
   }
   client.makeLQuerySet(l_queryfile);
   server.makeEditDFile(l_queryfile,ansfile);

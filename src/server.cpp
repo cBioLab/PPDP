@@ -106,6 +106,8 @@ int main(int argc,char* argv[]){
   int epsilon = server.epsilon;
 
   std::vector< std::pair<int,int> > cells;
+  int cells_len = min(sl,cl);
+  cells.resize(cells_len);
   int li;
   e_time = get_wall_time();
   calc_time += e_time-s_time;  
@@ -119,7 +121,7 @@ int main(int argc,char* argv[]){
   
   for(int i=0;i<sl+cl-1;i++){
     s_time = get_wall_time();
-    li = PPDPP::makePairVec(i,cl,sl,epsilon,cells);
+    li = PPDPP::makePairVec(i,cl,sl,epsilon,cells,cells_len);
     server.setLindex(li,cells);
     e_time = get_wall_time();
     calc_time += e_time-s_time; 
@@ -127,7 +129,7 @@ int main(int argc,char* argv[]){
     recvFile(sock,(char *)queryfile.c_str());
 		
     s_time = get_wall_time();
-    server.parallelDP(queryfile,resultfile,cells);
+    server.parallelDP(queryfile,resultfile,cells,cells_len);
     e_time = get_wall_time();
     calc_time += e_time-s_time; 
 		

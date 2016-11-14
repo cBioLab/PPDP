@@ -18,19 +18,19 @@ int PPDPP::dtoi(char c,int sigma){
   }
 }
 
-int PPDPP::makePairVec(int turn,int cl,int sl,int threshold,std::vector< std::pair<int,int> >& cells){
-  cells.resize(0);
+int PPDPP::makePairVec(int turn,int cl,int sl,int threshold,std::vector< std::pair<int,int> >& cells, int &cells_len){
   int ret = -1;
+  cells_len = 0;
   for(int i=0;i<=turn;i++){
     int j = turn-i;
     if(i>=cl || j>=sl || abs(i-j) >= threshold) continue;
     std::pair<int,int> p = std::make_pair(i,j);
-    cells.push_back(p);
+    cells[cells_len++] = p;
 #ifdef DEBUG
     std::cerr << "(" << i << "," << j << ") " << i+j << std::endl;
 #endif
     //lindexの条件必要
-    if(i == cl-1 || i-j == threshold-1) ret = cells.size()-1;
+    if(i == cl-1 || i-j == threshold-1) ret = cells_len-1;
   }
 #ifdef DEBUG
   if(ret != -1) std::cerr << "lindex : " <<  "(" << cells[ret].first << "," << cells[ret].second << ") " << std::endl;
@@ -104,10 +104,10 @@ void PPDPP::Server::readPubkey(std::string& pubFile){
   std::cerr << "Server received pubKey" << std::endl;
 }
 
-void PPDPP::Server::parallelDP(std::string& queryfile,std::string& resultfile,std::vector< std::pair<int,int> >& cells){
+void PPDPP::Server::parallelDP(std::string& queryfile,std::string& resultfile,std::vector< std::pair<int,int> >& cells,int &cells_len){
   std::ifstream ifs(queryfile.c_str(), std::ios::binary);
   std::ofstream ofs(resultfile.c_str(), std::ios::binary);
-  int loopnum = cells.size();
+  int loopnum = cells_len;
   for(int i=0;i<querysize*loopnum;i++){
     ifs >> queryarray[i];
   }
@@ -286,9 +286,9 @@ void PPDPP::Client::makeParam(std::string& cparam){
   ofs << epsilon << "\n";
 }
 
-void PPDPP::Client::makeQuerySet(std::string& query,std::vector< std::pair<int,int> >& cells){
+void PPDPP::Client::makeQuerySet(std::string& query,std::vector< std::pair<int,int> >& cells,int &cells_len){
   std::ofstream ofs(query.c_str(), std::ios::binary);
-  int loopnum = cells.size();
+  int loopnum = cells_len;
   omp_set_num_threads(core);
 #pragma omp parallel for
   for(int i=0;i<loopnum;i++){
@@ -344,9 +344,9 @@ void PPDPP::Client::makeLQuery(Elgamal::CipherText *lqueryvec,int index){
   }
 }
 
-void PPDPP::Client::decResultSet(std::string& result,std::vector< std::pair<int,int> >& cells){
+void PPDPP::Client::decResultSet(std::string& result,std::vector< std::pair<int,int> >& cells,int &cells_len){
   std::ifstream ifs(result.c_str(), std::ios::binary);
-  int loopmain = cells.size();
+  int loopmain = cells_len;
   for(int i=0;i<resultsize*loopmain;i++){
     ifs >> resultarray[i];
   }
