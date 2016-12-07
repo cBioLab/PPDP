@@ -18,6 +18,9 @@ int PPDPP::dtoi(char c,int sigma){
   }
 }
 
+/*サーバ・クライアント両者が使用
+  一回のイテレーションで計算するセルすべての座標をベクトルとして作成
+  最後に足し合わせられるセルの位置を返す*/
 int PPDPP::makePairVec(int turn,int cl,int sl,int threshold,std::vector< std::pair<int,int> >& cells, int &cells_len){
   int ret = -1;
   cells_len = 0;
@@ -39,7 +42,8 @@ int PPDPP::makePairVec(int turn,int cl,int sl,int threshold,std::vector< std::pa
   return ret;
 }
 
-
+/*クライアント文字列の長さと閾値を受け取る
+  計算に必要なベクトルのメモリを確保*/
 void PPDPP::Server::setParam(std::string& cparam){
   std::ifstream ifs(cparam.c_str(), std::ios::binary);
   ifs >> len_client;
@@ -89,6 +93,8 @@ void PPDPP::Server::setParam(std::string& cparam){
   }
 }
 
+/*最後に足し合わせるセルを記録しておく
+  セルに対応する乱数を記録しておくため*/
 void PPDPP::Server::setLindex(int l,std::vector< std::pair<int,int> >& cells){
   if(l >= 0) lindex = cells[l].second;
   else lindex = -1;
@@ -104,6 +110,8 @@ void PPDPP::Server::readPubkey(std::string& pubFile){
   std::cerr << "Server received pubKey" << std::endl;
 }
 
+/*一回のループ内で計算するセルに関する情報をすべて配列に書き出す
+  各セル毎に並列でOTを行う*/
 void PPDPP::Server::parallelDP(std::string& queryfile,std::string& resultfile,std::vector< std::pair<int,int> >& cells,int &cells_len){
   std::ifstream ifs(queryfile.c_str(), std::ios::binary);
   std::ofstream ofs(resultfile.c_str(), std::ios::binary);
@@ -121,6 +129,7 @@ void PPDPP::Server::parallelDP(std::string& queryfile,std::string& resultfile,st
   }
 }
 
+/*OTを行い、セルのoutputを計算*/
 void PPDPP::Server::calcInnerProduct(Elgamal::CipherText *query,Elgamal::CipherText *ret,int turn_c,int turn_s){
   CipherTextVec queryvec;
   queryvec.resize(querysize);
@@ -187,6 +196,8 @@ void PPDPP::Server::calcInnerProduct(Elgamal::CipherText *query,Elgamal::CipherT
   if(turn_c != len_client-1) ran_y[(turn_c+1)*len_server+turn_s] = ry % SBLOCK;
 }
 
+/*端の部分のセルの計算
+ 足し合わせて編集距離となる部分の計算*/
 void PPDPP::Server::calcLInnerProduct(Elgamal::CipherText *lqueryvec,Elgamal::CipherText *lret,int s_index){
   pub.enc((*lret),0,rg);
   for(int i=0;i<tablevecsize;i++){
@@ -197,6 +208,7 @@ void PPDPP::Server::calcLInnerProduct(Elgamal::CipherText *lqueryvec,Elgamal::Ci
   }
 }
 
+/*編集距離計算に必要な端のセルの計算を並列で行う*/
 void PPDPP::Server::makeEditDFile(std::string& l_query,std::string& ans){
   std::ifstream ifs(l_query.c_str(), std::ios::binary);
   for(int i=0;i<tablevecsize*len_server;i++){
@@ -220,6 +232,7 @@ void PPDPP::Server::makeEditDFile(std::string& l_query,std::string& ans){
   ofs << editD << "\n";
 }
 
+
 void PPDPP::Client::setKeys(std::string& prvFile, std::string& pubFile){
   const mcl::EcParam& para = mcl::ecparam::secp192k1;
   const Fp x0(para.gx);
@@ -238,7 +251,7 @@ void PPDPP::Client::setKeys(std::string& prvFile, std::string& pubFile){
   ROT::Load(prv, prvFile);
   
   if(len_client<len_server)
-    prv.setCache(0, max((len_server+1)*2,10*sigma)); // set cache for prv
+    prv.setCache(0, max((len_server+1)*2,10*sigma));
   else
     prv.setCache(0, max((len_client+1)*2,10*sigma));
   
@@ -275,6 +288,7 @@ void PPDPP::Client::setParam(std::string& sparam){
   if(queryarray == NULL || resultarray == NULL || lqueryarray == NULL) std::cerr << "error lqarray" << std::endl;
 }
 
+/*端のセルの記録*/
 void PPDPP::Client::setLindex(int l,std::vector< std::pair<int,int> > &cells){
   if(l >= 0) lindex = cells[l].first;
   else lindex = -1;
@@ -286,6 +300,7 @@ void PPDPP::Client::makeParam(std::string& cparam){
   ofs << epsilon << "\n";
 }
 
+/*一回のloopで計算するセルすべて分のクエリをファイルにまとめる*/
 void PPDPP::Client::makeQuerySet(std::string& query,std::vector< std::pair<int,int> >& cells,int &cells_len){
   std::ofstream ofs(query.c_str(), std::ios::binary);
   int loopnum = cells_len;
@@ -309,6 +324,7 @@ void PPDPP::Client::makeQuerySet(std::string& query,std::vector< std::pair<int,i
 #endif
 }
 
+/*各クエリをベクトルに書き込む*/
 void PPDPP::Client::makeQuery(int turn_c,int turn_s,Elgamal::CipherText *queryvec){
   Elgamal::CipherText ct;
   int index = turn_c * len_server + turn_s;
@@ -319,6 +335,7 @@ void PPDPP::Client::makeQuery(int turn_c,int turn_s,Elgamal::CipherText *queryve
   pub.enc(queryvec[querysize-1],t/(querysize-1),rg);
 }
 
+/*編集距離計算に必要な端のセルのクエリを並列でファイルにまとめる*/
 void PPDPP::Client::makeLQuerySet(std::string& l_query){
 #ifdef DEBUG
   for(int i=0;i<len_server;i++){
@@ -337,6 +354,7 @@ void PPDPP::Client::makeLQuerySet(std::string& l_query){
   }
 }
 
+/*端の各セルについてクエリを作成*/
 void PPDPP::Client::makeLQuery(Elgamal::CipherText *lqueryvec,int index){
   int t = lx[index]+SBLOCK*ly[index]+LBLOCK*dtoi(sequence[ll[index]],sigma);
   for(int i=0;i<tablevecsize;i++){
@@ -344,6 +362,7 @@ void PPDPP::Client::makeLQuery(Elgamal::CipherText *lqueryvec,int index){
   }
 }
 
+/*loop内で計算される各セルの計算結果を並列で復号する*/
 void PPDPP::Client::decResultSet(std::string& result,std::vector< std::pair<int,int> >& cells,int &cells_len){
   std::ifstream ifs(result.c_str(), std::ios::binary);
   int loopmain = cells_len;
@@ -357,6 +376,7 @@ void PPDPP::Client::decResultSet(std::string& result,std::vector< std::pair<int,
   }
 }
 
+/*計算結果の復号*/
 void PPDPP::Client::decResult(Elgamal::CipherText *resultvec,int turn_c,int turn_s){
   bool b;
   int index = turn_c * len_server + turn_s;
@@ -370,6 +390,7 @@ void PPDPP::Client::decResult(Elgamal::CipherText *resultvec,int turn_c,int turn
   if(turn_c != len_client-1) y[(turn_c+1)*len_server+turn_s] = ret % SBLOCK;
 }
 
+/*暗号化された編集距離の復号*/
 int PPDPP::Client::decEditD(std::string& Ans){
   Elgamal::CipherText ans;
   bool b;
@@ -397,7 +418,7 @@ int PPDPP::Client::decEditD(std::string& Ans){
   return editD + len_client - len_server;
 }
 
-
+/*編集距離の計算(確認用)*/
 int PPDPP::edit_check(std::string &s,std::string &c){
   int ss = s.size()+1;
   int cs = c.size()+1;
