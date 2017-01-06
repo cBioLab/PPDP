@@ -16,8 +16,8 @@ int main(int argc,char* argv[]){
   std::string str1,str2;
 	
   if(argc == 1){
-    str1 = "TATATATA";
-    str2 = "ATGTATAT";
+    str1 = "11000111001100011100110001110011000111001100011100";
+    str2 = "00101000011100011100110001110011000111001100011100";
   }else if(argc == 2){
     std::string stringfile = argv[1];
     std::ifstream readfile(stringfile.c_str(),std::ios::in);
@@ -48,8 +48,8 @@ int main(int argc,char* argv[]){
   server.core = 1;
   client.core = 1;  
   client.epsilon = 0;
-  server.sigma = 4;
-  client.sigma = 4;
+  server.sigma = 2;
+  client.sigma = 2;
 
   server.makeParam(sparam);
   client.makeParam(cparam);

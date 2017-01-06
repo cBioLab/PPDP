@@ -154,10 +154,13 @@ int main(int argc,char* argv[]){
   calc_time += e_time-s_time;
   total_time = get_wall_time() - start_sec;
  
-  std::cout << "Edit distance : " << ans << std::endl;
-  std::cout << "client calc_time : " << calc_time << "s" << std::endl;
-  std::cout << "total time : " << total_time << "s" << std::endl;
-  std::cout << "comsize : " << (double)(recvsize+sendsize)/(1024*1024) << "MB" << std::endl;
-  
+  //std::cout << "Edit distance : " << ans << std::endl;
+  //std::cout << "client calc_time : " << calc_time << "s" << std::endl;
+  //std::cout << "total time : " << total_time << "s" << std::endl;
+  //std::cout << "comsize : " << (double)(recvsize+sendsize)/(1024*1024) << "MB" << std::endl;
+  std::cerr << "Edit distance : " << ans << std::endl;
+  std::cout << calc_time << ",";
+  std::cout << total_time << ",";
+  std::cout << (double)(recvsize+sendsize)/(1024*1024) << std::endl;
   return 0;
 }

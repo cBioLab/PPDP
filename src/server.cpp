@@ -144,7 +144,7 @@ int main(int argc,char* argv[]){
   
   sendFile(sock,(char *)ansfile.c_str());
   
-  std::cout << "server calc_time : " << calc_time << "s" << std::endl;
-  
+  //  std::cout << "server calc_time : " << calc_time << "s" << std::endl;
+  std::cout << calc_time << std::endl;
   return 0;
 }
