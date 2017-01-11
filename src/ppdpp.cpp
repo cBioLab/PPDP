@@ -1,20 +1,19 @@
 #include "ppdpp.h"
 
 int PPDPP::dtoi(char c,int sigma){
-  switch(sigma){
-  case 2: return (c - '0');
-  case 4:
-    {
-      switch(c){
-      case 'A': return 0;
-      case 'C': return 1;
-      case 'G': return 2;
-      case 'T': return 3;
-      default : std::cerr << "error1 : " << c << std::endl;
-	return -1;
-      }
+  if(sigma == 2) return (c - '0');
+  else if(sigma == 4){
+    switch(c){
+    case 'A': return 0;
+    case 'C': return 1;
+    case 'G': return 2;
+    case 'T': return 3;
+    default : std::cerr << "error1-1 : " << c << std::endl;
+      return -1;
     }
-  case 26: return (c - 'a');
+  }else if(c <= 26) return (c - 'a')%sigma;
+  else{
+    std::cerr << "error1-2 : " << c << std::endl;
   }
 }
 
