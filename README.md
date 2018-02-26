@@ -19,7 +19,7 @@
 
 ## インストール方法
 ライブラリの最新版には対応していないので、下記のバージョンを利用してください。
-       cd mcl
+       cd mcl
        git checkout b272c9166741926f959666db9ab21915216bf6cf
        cd ..
        cd cybozulib
