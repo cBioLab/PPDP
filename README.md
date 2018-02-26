@@ -5,6 +5,10 @@
 ## 概要
 "加法準同型暗号を用いた編集距離の秘匿計算" (2016年度卒論[神保])の実装。サーバとクライアントが互いに秘密の文字列を所持している時、互いの文字列を公開することなく二つの文字列の編集距離を計算することができる。
 
+## 動作環境
++ Intel 64-bit CPUs
++ 64-bit Linux (tested on ubuntu 14.04 LTS)
+
 ## 準備
 作業用ディレクトリを作成し、以下のリポジトリをダウンロードする。
 
@@ -17,7 +21,9 @@
        git clone git://github.com/herumi/cybozulib.git
        git clone git://github.com/herumi/cybozulib_ext.git
 
-* OpenSSL と libgmp-dev を別途インストールする必要がする。 
+OpenSSL と libgmp-dev を別途インストールする必要がある。  
+       sudo apt-get install libssl-dev      
+       sudo apt-get install libgmp-dev
 
 ## インストール方法
 ライブラリの最新版には対応していないので、下記のバージョンを利用する必要がある。
