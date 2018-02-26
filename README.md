@@ -21,8 +21,9 @@
        git clone git://github.com/herumi/cybozulib.git
        git clone git://github.com/herumi/cybozulib_ext.git
 
-OpenSSL と libgmp-dev を別途インストールする必要がある。  
-       sudo apt-get install libssl-dev      
+OpenSSL と libgmp-dev を別途インストールする必要がある。
+
+       sudo apt-get install libssl-dev
        sudo apt-get install libgmp-dev
 
 ## インストール方法
