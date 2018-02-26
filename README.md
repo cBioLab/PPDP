@@ -31,9 +31,8 @@
        cd ..
        cd xbyak
        git checkout b6133a02dd6b7116bea31d0e6b7142bf97f071aa
-       cd ../PPDP/src 
-       make
-
+       cd ../PPDP/src
+       make
 
 ## サンプルの実行
 
