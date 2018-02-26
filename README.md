@@ -18,7 +18,7 @@
 * OpenSSL と libgmp-dev を別途インストールする必要があります。 
 
 ## インストール方法
-
+ライブラリの最新版には対応していないので、下記のバージョンを利用してください。
        cd mcl
        git checkout b272c9166741926f959666db9ab21915216bf6cf
        cd ..
@@ -31,9 +31,8 @@
        cd xbyak
        git checkout b6133a02dd6b7116bea31d0e6b7142bf97f071aa
        cd ../PPDP/src 
-       make
-       
-* mclの最新版には対応していないので、上記のバージョンを利用してください。
+       make
+
 
 ## サンプルの実行
 
