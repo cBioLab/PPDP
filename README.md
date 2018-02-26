@@ -8,8 +8,8 @@ Create a working directory (e.g., work) and clone the following repositories.
 
        mkdir work
        cd work
-       git clone git://github.com/cBioLab/PPDP.git
-       git clone git://github.com/iskana/PBWT-sec.git
+       git clone git://github.com/cBioLab/PPDP.git
+       git clone git://github.com/iskana/PBWT-sec.git
        git clone git://github.com/herumi/xbyak.git
        git clone git://github.com/herumi/mcl.git
        git clone git://github.com/herumi/cybozulib.git
