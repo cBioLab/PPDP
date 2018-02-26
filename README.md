@@ -1,4 +1,4 @@
-# **PPDP**
+# **PPDP (Privacy Preserving Dynamic Programming)**
 
 **English →　README_EN.md**
 
